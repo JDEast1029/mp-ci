@@ -1,51 +1,35 @@
 import minimist from 'minimist';
 import chalk from 'chalk';
-import fs from 'fs';
-import path from 'path';
-import DefaultConfig from './default.config.js';
-import { validateConfig } from './utils.js';
+import { execa } from 'execa';
+import { getConfig } from './config.js';
 import { createVersion, updatePackageVersion } from './version.js';
+import { createChangeLog } from "./change-log.js";
 
 const ROOT_PATH = process.cwd()
 
 const options = minimist(process.argv.slice(2))
 const step = msg => console.log(chalk.cyan(msg))
 const error = (msg) => console.log(chalk.red(msg))
+const run = (bin, args, opts = {}) =>
+  execa(bin, args, { stdio: 'inherit', ...opts })
 
-// dev
-step(JSON.stringify(options))
-const getConfig = async () => {
-	let configPath = options.c || options.config;
-	let config = DefaultConfig;
-	if (configPath) {
-		configPath = path.resolve(ROOT_PATH, options.c || options.config)
-		config = (await import(configPath)).default;
-		// TODO: 合并defaultconfig
-	}
+export const main = async () => {
 	try {
-		// validateConfig(config);
-	} catch (e) {
-		return Promise.reject(e);
-	}
+		// dev
+		// const config = await getConfig(ROOT_PATH, options);
+		// const version = await createVersion(ROOT_PATH);
+		// config.upload.version = version;
+		
+		// step('\nUpdating package version...')
+		// updatePackageVersion(ROOT_PATH, version);
+		
+		// step('\nbuild package...')
+		// await run('npm', ['run', config.script.build || 'build'])
+		
 
-	// TODO: 默认项设置
-
-	return config;
-}
-
-const main = async () => {
-	try {
-		const config = await getConfig();
-		const version = await createVersion(ROOT_PATH);
-		config.upload.version = version;
-		step('\nUpdating package version...')
-		updatePackageVersion(ROOT_PATH, version);
-
-		step('\nbuild package...')
-
+		step('\nGenerating changelog...')
+		await createChangeLog(ROOT_PATH, options)
 	} catch (e) {
 		error(e instanceof Error ? e.message : e);
 	}
 }
-
-main()
