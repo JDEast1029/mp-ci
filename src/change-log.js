@@ -3,10 +3,10 @@ import fs from "fs";
 import path from "path";
 
 // TODO: 适配项目写一个自己config，参照angular
-export const createChangeLog = (ROOT_PATH, options) => {
+export const createChangeLog = (ROOT_PATH, config) => {
 	// conventional-changelog -p angular -i CHANGELOG.md -s
 	// 默认生成前一个Tag到目前的记录
-	const changelogStream = conventionalChangelog(options.changelog);
+	const changelogStream = conventionalChangelog(config.changelog);
 
 	const outputFilePath = path.resolve(ROOT_PATH, "CHANGELOG.md");
 
@@ -25,7 +25,7 @@ export const createChangeLog = (ROOT_PATH, options) => {
 			// 读取原始的 changelog 文件
 			fs.readFile(outputFilePath, (err, data) => {
 				if (err) {
-					r(err);
+					j(err);
 					return;
 				}
 
@@ -36,9 +36,10 @@ export const createChangeLog = (ROOT_PATH, options) => {
 				// 写入新的 changelog
 				fs.writeFile(outputFilePath, finalChangelog, (err) => {
 					if (err) {
-						r(err);
+						j(err);
 						return;
 					}
+					r()
 				});
 			});
 		});
