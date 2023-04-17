@@ -12,7 +12,6 @@ export default {
 		
 	},
 	preview: {
-		qrcodeFormat: 'image', // 官方默认terminal
 		qrcodeOutputDest: './qrcode.png'
 	}
 }
