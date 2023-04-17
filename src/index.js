@@ -23,7 +23,7 @@ const runIfNotDry = isDryRun ? dryRun : run
 export const main = async () => {
 	try {
 		const config = await getConfig(ROOT_PATH, options);
-		const targetVersion = await createVersion(ROOT_PATH);
+		const targetVersion = await createVersion(ROOT_PATH, options);
 		config.upload.version = targetVersion;
 
 		const mpCI = new MPCI(config)
