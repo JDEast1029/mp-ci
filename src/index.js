@@ -36,7 +36,7 @@ export const main = async () => {
 		step('\nUpdating package version...')
 		updatePackageVersion(ROOT_PATH, targetVersion);
 		
-		if (config.script.build) {
+		if (!options.skipBuild && config.script.build) {
 			step('\nBuild package...')
 			await run('npm', ['run', config.script.build])
 		}

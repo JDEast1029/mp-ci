@@ -22,6 +22,9 @@ export const getConfig = async (ROOT_PATH, options) => {
 
 		// 处理预览
 		config.preview.qrcodeOutputDest = path.resolve(config.preview.qrcodeOutputDest || DefaultConfig.preview.qrcodeOutputDest)
+		config.preview.pagePath = options.pagePath || config.preview.pagePath;
+		config.preview.searchQuery = options.searchQuery || config.preview.searchQuery;
+		config.preview.scene = options.scene || config.preview.scene;
 
 		// 指令参数 -r(robot: 1 - 30 )
 		if (options.r) {

@@ -3,9 +3,9 @@ import path from 'path';
 import enquirer from 'enquirer';
 import semver from 'semver';
 
-export const createVersion = async (ROOT_PATH) => {
+export const createVersion = async (ROOT_PATH, options) => {
 	const currentVersion = JSON.parse(fs.readFileSync(path.resolve(ROOT_PATH, 'package.json'))).version
-	const preId = (semver.prerelease(currentVersion) && semver.prerelease(currentVersion)[0]);
+	const preId = options.preid ? options.preid : (semver.prerelease(currentVersion) && semver.prerelease(currentVersion)[0]);
 	const versionIncrements = [
 		'patch',
 		'minor',

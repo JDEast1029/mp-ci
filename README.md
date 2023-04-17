@@ -1,14 +1,8 @@
 # mp-ci
 小程序自动上传工具
 
-1. 获取config发布的配置文件 mp-release.config.js
-```js
-{
-	project: IProject,
-	upload: IUpload,
-	preview: IPreview
-}
-```
+1. 获取config发布的配置文件 mp-ci.config.js
+
 IProject
 | 键 | 类型 | 说明 |
 | ---- | ---- |	---- |
@@ -47,9 +41,17 @@ IPreview
 | searchQuery | string | 否 | 预览页面路径启动参数 |
 | scene | number | 否 | 默认值 1011，具体含义见场景值列表 |
 
-1. 确认发布的版本  or  预览(只执行3)
-2. 打包
-3. 生成changelog
-4. 提交代码
-5. 推送到github
-6. 上传到微信
+### 指令参数
+| 指令 | 说明 |
+| ---- | ---- |
+| `-c`, `--config` | 指定配置文件，没有指定的话，默认回去找根目录下名为`mp-ci.config.js`的文件，如果文件不存在则用库中默认的配置 |
+| `--preid` | 指定预发布的类型`alpha` or `beta` |
+| `--dry` | 不执行命令，只打印日志 |
+| `--progress` | 展示上传和预览的进度, 默认`false` |
+| `-r` | 上传和预览时，指定使用哪一个 ci 机器人，可选值：1 ~ 30 |
+| `--onlyUpload` | 只执行上传微信的命令 |
+| `--skipBuild` | 跳过打包 |
+| `--preview` | 开启预览，除了获取版本号和预览外，其他操作均不执行(更新版本，推送git，打包等等) |
+| `--pagePath` | 预览页面路径 |
+| `--searchQuery` | 预览页面路径启动参数 |
+| `--scene` | 预览页面进入的场景，默认值 1011，具体含义见[场景值列表](https://developers.weixin.qq.com/miniprogram/dev/reference/scene-list.html) |
