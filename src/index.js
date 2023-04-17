@@ -4,6 +4,7 @@ import { execa } from 'execa';
 import { getConfig } from './config.js';
 import { createVersion, updatePackageVersion } from './version.js';
 import { createChangeLog } from "./change-log.js";
+import MPCI from "./wechat.js";
 
 const ROOT_PATH = process.cwd()
 
@@ -20,17 +21,20 @@ const runIfNotDry = isDryRun ? dryRun : run
 
 export const main = async () => {
 	try {
-		// dev
 		const config = await getConfig(ROOT_PATH, options);
 		const targetVersion = await createVersion(ROOT_PATH);
 		config.upload.version = targetVersion;
-		
+
 		step('\nUpdating package version...')
-		updatePackageVersion(ROOT_PATH, targetVersion);
+		// updatePackageVersion(ROOT_PATH, targetVersion);
 		
-		step('\nbuild package...')
+		step('\nBuild package...')
 		// await run('npm', ['run', config.script.build || 'build'])
-		
+
+		const mpCI = new MPCI(config)
+		step('\nUploading to Wechat...')
+		await mpCI.upload();
+		// preview
 
 		step('\nGenerating changelog...')
 		await createChangeLog(ROOT_PATH, config)
@@ -53,6 +57,11 @@ export const main = async () => {
 		}
 		console.log()
 	} catch (e) {
-		error(e instanceof Error ? e.message : e);
+		if (e instanceof Error) {
+			error(e.message);
+			console.log(e);
+		} else {
+			error(e)
+		}
 	}
 }

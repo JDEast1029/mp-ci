@@ -9,6 +9,9 @@ export const getConfig = async (ROOT_PATH, options) => {
 	if (configPath) {
 		configPath = path.resolve(ROOT_PATH, options.c || options.config)
 		config = (await import(configPath)).default;
+
+		config.project.projectPath = path.resolve(config.project.projectPath);
+		config.project.privateKeyPath = path.resolve(config.project.privateKeyPath);
 		// TODO: 合并defaultconfig
 	}
 	try {

@@ -51,5 +51,5 @@ IPreview
 2. 打包
 3. 生成changelog
 4. 提交代码
-5. 上传到微信
-6. 推送到github
+5. 推送到github
+6. 上传到微信
