@@ -28,7 +28,7 @@ export const main = async () => {
 
 		const mpCI = new MPCI(config)
 		if (options.preview) {
-			// preview
+			step('\nPreviewing to miniprogram...')
 			await mpCI.preview()
 			return;
 		}
@@ -61,7 +61,7 @@ export const main = async () => {
 			console.log(`\nDry run finished - run git diff to see package changes.`)
 		}
 
-		step('\nUploading to Wechat...')
+		step('\nUploading to miniprogram...')
 		await mpCI.upload();
 
 		console.log()
