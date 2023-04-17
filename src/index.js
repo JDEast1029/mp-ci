@@ -27,10 +27,17 @@ export const main = async () => {
 		config.upload.version = targetVersion;
 
 		const mpCI = new MPCI(config)
+		const uploadFn = async () => {
+			step('\nUploading to miniprogram...')
+			await mpCI.upload();
+		}
 		if (options.preview) {
 			step('\nPreviewing to miniprogram...')
 			await mpCI.preview()
 			return;
+		} else if (options.onlyUpload) {
+			await uploadFn()
+			return
 		}
 
 		step('\nUpdating package version...')
@@ -61,8 +68,7 @@ export const main = async () => {
 			console.log(`\nDry run finished - run git diff to see package changes.`)
 		}
 
-		step('\nUploading to miniprogram...')
-		await mpCI.upload();
+		await uploadFn()
 
 		console.log()
 	} catch (e) {
