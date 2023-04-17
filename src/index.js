@@ -29,12 +29,7 @@ export const main = async () => {
 		// updatePackageVersion(ROOT_PATH, targetVersion);
 		
 		step('\nBuild package...')
-		// await run('npm', ['run', config.script.build || 'build'])
-
-		const mpCI = new MPCI(config)
-		step('\nUploading to Wechat...')
-		await mpCI.upload();
-		// preview
+		await run('npm', ['run', config.script.build || 'build'])
 
 		step('\nGenerating changelog...')
 		await createChangeLog(ROOT_PATH, config)
@@ -55,6 +50,12 @@ export const main = async () => {
 		if (isDryRun) {
 			console.log(`\nDry run finished - run git diff to see package changes.`)
 		}
+
+		const mpCI = new MPCI(config)
+		step('\nUploading to Wechat...')
+		await mpCI.upload();
+		// preview
+		
 		console.log()
 	} catch (e) {
 		if (e instanceof Error) {
