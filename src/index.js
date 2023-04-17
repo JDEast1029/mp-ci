@@ -23,42 +23,46 @@ const runIfNotDry = isDryRun ? dryRun : run
 export const main = async () => {
 	try {
 		const config = await getConfig(ROOT_PATH, options);
-		// const targetVersion = await createVersion(ROOT_PATH);
-		// config.upload.version = targetVersion;
-
-		// step('\nUpdating package version...')
-		// updatePackageVersion(ROOT_PATH, targetVersion);
-		
-		// if (config.script.build) {
-		// 	step('\nBuild package...')
-		// 	await run('npm', ['run', config.script.build])
-		// }
-
-		// step('\nGenerating changelog...')
-		// await createChangeLog(ROOT_PATH, config)
-
-		// const { stdout } = await run('git', ['diff'], { stdio: 'pipe' })
-		// if (stdout) {
-		// 	step('\nCommitting changes...')
-		// 	await runIfNotDry('git', ['add', '-A'])
-		// 	await runIfNotDry('git', ['commit', '-m', `release: v${targetVersion}`])
-		// } else {
-		// 	console.log('No changes to commit.')
-		// }
-
-		// step('\nPushing to GitHub...')
-		// await runIfNotDry('git', ['tag', `v${targetVersion}`])
-		// await runIfNotDry('git', ['push', 'origin', `refs/tags/v${targetVersion}`])
-		// await runIfNotDry('git', ['push'])
-		// if (isDryRun) {
-		// 	console.log(`\nDry run finished - run git diff to see package changes.`)
-		// }
+		const targetVersion = await createVersion(ROOT_PATH);
+		config.upload.version = targetVersion;
 
 		const mpCI = new MPCI(config)
+		if (options.preview) {
+			// preview
+			await mpCI.preview()
+			return;
+		}
+
+		step('\nUpdating package version...')
+		updatePackageVersion(ROOT_PATH, targetVersion);
+		
+		if (config.script.build) {
+			step('\nBuild package...')
+			await run('npm', ['run', config.script.build])
+		}
+
+		step('\nGenerating changelog...')
+		await createChangeLog(ROOT_PATH, config)
+
+		const { stdout } = await run('git', ['diff'], { stdio: 'pipe' })
+		if (stdout) {
+			step('\nCommitting changes...')
+			await runIfNotDry('git', ['add', '-A'])
+			await runIfNotDry('git', ['commit', '-m', `release: v${targetVersion}`])
+		} else {
+			console.log('No changes to commit.')
+		}
+
+		step('\nPushing to GitHub...')
+		await runIfNotDry('git', ['tag', `v${targetVersion}`])
+		await runIfNotDry('git', ['push', 'origin', `refs/tags/v${targetVersion}`])
+		await runIfNotDry('git', ['push'])
+		if (isDryRun) {
+			console.log(`\nDry run finished - run git diff to see package changes.`)
+		}
+
 		step('\nUploading to Wechat...')
-		// await mpCI.upload();
-		// preview
-		await mpCI.preview()
+		await mpCI.upload();
 
 		console.log()
 	} catch (e) {
