@@ -1,5 +1,5 @@
 {
-  "name": "@sft/mp-release",
+  "name": "@sft/mp-ci",
   "version": "1.0.1",
   "description": "",
   "type": "module",
@@ -14,7 +14,7 @@
   "author": "",
   "license": "MIT",
   "bin": {
-    "mp-release": "bin/mp-release.js"
+    "mp-ci": "bin/mp-ci.js"
   },
   "scripts": {
     "dev": "rollup -w --config --environment NODE_ENV:development",

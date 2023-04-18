@@ -1,3 +1,4 @@
+// demo
 export default {
 	script: {
 		build: 'build' // 项目内构建小程序的命令，有就执行，没有就不执行
