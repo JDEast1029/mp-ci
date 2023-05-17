@@ -3,7 +3,7 @@
   "version": "1.0.1",
   "description": "",
   "type": "module",
-  "main": "lib/index.cjs",
+  "main": "lib/index.mjs",
   "exports": {
     ".": {
       "import": "./lib/index.mjs",
@@ -41,5 +41,8 @@
     "@rollup/plugin-terser": "^0.4.1",
     "rimraf": "^5.0.0",
     "rollup": "^3.20.3"
+  },
+  "engines": {
+    "node": ">=14.18.1"
   }
 }

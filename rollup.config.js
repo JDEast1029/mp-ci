@@ -14,6 +14,7 @@ const config = {
 		file: 'lib/index.mjs',
 		format: 'esm',
 	}],
+	external: ['miniprogram-ci', 'conventional-changelog'],
 	plugins: [
 		nodeResolve({
 			exportConditions: ['node'],
